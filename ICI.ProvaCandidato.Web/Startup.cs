@@ -1,17 +1,13 @@
+using ICI.ProvaCandidato.Negocio.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Web
 {
-	public class Startup
+    public class Startup
 	{
 		public Startup(IConfiguration configuration)
 		{
@@ -24,6 +20,13 @@ namespace ICI.ProvaCandidato.Web
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllersWithViews();
+			services.AddDbContext<SqliteContext>(opt =>
+			{
+                opt.UseSqlite(Configuration
+                   .GetConnectionString("DefaultConnection"))
+                   .UseLazyLoadingProxies();
+            });
+			services.AddTransient<SqliteContext>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
