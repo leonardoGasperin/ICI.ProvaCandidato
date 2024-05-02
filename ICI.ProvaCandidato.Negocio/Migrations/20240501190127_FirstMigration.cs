@@ -62,8 +62,7 @@ namespace ICI.ProvaCandidato.Negocio.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     NoticiaId = table.Column<int>(type: "INTERGER", nullable: false),
-                    TagId = table.Column<int>(type: "INTERGER", nullable: false),
-                    Tag = table.Column<int>(type: "INTEGER", nullable: false)
+                    TagId = table.Column<int>(type: "INTERGER", nullable: false)
                 },
                 constraints: table =>
                 {
