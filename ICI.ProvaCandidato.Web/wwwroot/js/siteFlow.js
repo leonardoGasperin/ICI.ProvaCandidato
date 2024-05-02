@@ -31,10 +31,6 @@ function excluir(noticiaId) {
         if (!response.ok) {
             throw new Error('Erro ao excluir notícia');
         }
-        //var linhaParaExcluir = document.getElementById(noticiaId);
-        //if (linhaParaExcluir) {
-        //    linhaParaExcluir.remove();
-        //}
     })
     .catch(error => {
         console.error('Erro:', error);
