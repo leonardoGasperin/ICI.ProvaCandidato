@@ -1,5 +1,9 @@
-﻿using ICI.ProvaCandidato.Negocio.Interfaces;
+﻿using ICI.ProvaCandidato.Dados.Dto;
+using ICI.ProvaCandidato.Dados.Interface;
+using ICI.ProvaCandidato.Dados.Models;
+using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Controllers
@@ -9,10 +13,12 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
     public class TagController : ControllerBase
     {
         public readonly ITagRepository _repotory;
+        public readonly ITagRuleRepository _rule;
 
-        public TagController(ITagRepository repotory)
+        public TagController(ITagRepository repotory, ITagRuleRepository rule)
         {
             _repotory = repotory;
+            _rule = rule;
         }
 
         [HttpGet]
@@ -21,6 +27,66 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
             var tags = await _repotory.GetAll();
 
             return Ok(tags);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(TagDto dto)
+        {
+            var exist = await _rule.AlreadyExist(dto.Descricao);
+
+            try
+            {
+                if (!exist)
+                {
+                    await _repotory.Create(dto);
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+
+            return Ok(dto);
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> Edit(string descricaoOriginal, TagDto dto)
+        {
+            var exist = await _rule.AlreadyExist(dto.Descricao);
+
+            try
+            {
+                if (!exist)
+                {
+                    await _repotory.Update(descricaoOriginal, dto);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+
+            return Ok(dto);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string descricao)
+        {
+            var cannotDelete = await _rule.CannotDelete(descricao);
+
+            try
+            {
+                if (!cannotDelete)
+                {
+                    await _repotory.Delete(descricao);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+
+            return Ok();
         }
     }
 }

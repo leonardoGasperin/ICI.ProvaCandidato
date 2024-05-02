@@ -1,3 +1,4 @@
+using ICI.ProvaCandidato.Dados.Interface;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using ICI.ProvaCandidato.Negocio.Repositories;
@@ -37,6 +38,7 @@ namespace ICI.ProvaCandidato.Web
             services.AddScoped<INoticiaRepository, NoticiaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagRuleRepository, TagRuleRepository>();
         }
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
