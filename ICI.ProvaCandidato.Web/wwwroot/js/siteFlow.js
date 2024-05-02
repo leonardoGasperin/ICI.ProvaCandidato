@@ -106,7 +106,7 @@ document.getElementById('deleteTagForm').addEventListener('submit', function (ev
             }
         })
         .then(data => {
-            const itemsExcluidos = document.querySelectorAll('.tag-show'); // Substitua '.item' pela classe real dos itens
+            const itemsExcluidos = document.querySelectorAll('.tag-show');
             itemsExcluidos.forEach(item => {
                 if (item.textContent === inputValue) {
                     item.remove();
