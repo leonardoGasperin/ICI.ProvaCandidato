@@ -3,6 +3,7 @@ using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,19 +32,33 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
 
         public async Task Create(NoticiaDto dto, Usuario usuario, Tag tag) 
         {
-            var newNoticia = Noticia.MountFromDto(dto);
-            newNoticia.UsuarioId = usuario.Id;
-            _context.Noticias.Add(newNoticia);
-            await _context.SaveChangesAsync();
-
-            var tagNoticiaRelation = new TagNoticia()
+            try
             {
-                NoticiaId = newNoticia.Id,
-                TagId = tag.Id,
-            };
+                var newNoticia = Noticia.MountFromDto(dto);
+                newNoticia.UsuarioId = usuario.Id;
+                _context.Noticias.Add(newNoticia);
+                await _context.SaveChangesAsync();
 
-            _context.TagNoticias.Add(tagNoticiaRelation);
-            await _context.SaveChangesAsync();
+                var tagNoticiaRelation = new TagNoticia()
+                {
+                    NoticiaId = newNoticia.Id,
+                    TagId = tag.Id,
+                };
+
+                _context.TagNoticias.Add(tagNoticiaRelation);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ocorreu um erro ao criar a notícia: {ex.Message}");
+
+                // Se houver uma exceção interna, registre-a também
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
+            }
+           
         }
 
         public async Task Update(NoticiaDto dto, int noticiaId)

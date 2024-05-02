@@ -16,13 +16,15 @@ function OnGetAsync() {
         .then(data => {
             const tabTags = document.getElementById("noticiaTable");
             data.forEach(function (item) {
+
+                const textoExibido = item.texto.length > 72 ? item.texto.substring(0, 72) + '...' : item.texto;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `<td><div style="cursor: pointer"
                                              onclick="GoToLeitura('tabLeitura', 
                                              '${encodeURIComponent(JSON.stringify(item))}')">
                                                 ${item.titulo}
                                     </div></td>
-                                    <td>${item.texto.substring(0, 75 - 3) + '...'}</td>
+                                    <td>${textoExibido}</td>
                                     <td>${item.usuario.nome}</td>
                                     <td>${item.usuario.email}</td>`;
                 tabTags.appendChild(tr);
@@ -91,7 +93,7 @@ document.getElementById('createTagForm').addEventListener('submit', function (ev
 document.getElementById('deleteTagForm').addEventListener('submit', function (event) {
     event.preventDefault();
     const inputValue = document.querySelector('input[name="deleteTag"]').value;
-
+    var canDelete = true;
 
     fetch('https://localhost:5001/api/Tag' , {
         method: 'DELETE',
@@ -106,13 +108,14 @@ document.getElementById('deleteTagForm').addEventListener('submit', function (ev
             }
             if (response.status === 404) {
                 alert(`Tag '${inputValue}' esta vinculada a uma noticia ou foi não encontrada`);
+                canDelete = false
                 return;
             }
         })
         .then(data => {
             const itemsExcluidos = document.querySelectorAll('.tag-show');
             itemsExcluidos.forEach(item => {
-                if (item.textContent === inputValue) {
+                if (canDelete && item.textContent === inputValue) {
                     item.remove();
                 }
             });
@@ -158,7 +161,19 @@ document.getElementById('createNoticiaForm').addEventListener('submit', function
             return response.json();
         })
         .then(data => {
-            console.log('Resposta do servidor:', data);
+            const Noticiatabela = document.getElementById("noticiaTable");
+            const textoExibido = data.noticia.texto.length > 72 ? data.noticia.texto.substring(0, 72) + '...' : data.noticia.texto;
+
+            Noticiatabela.innerHTML += `
+                <td><div style="cursor: pointer"
+                                             onclick="GoToLeitura('tabLeitura',
+                                             '${encodeURIComponent(JSON.stringify(data.noticia))}')">
+                                                ${data.noticia.titulo}
+                                    </div></td>
+                                    <td>${textoExibido}</td>
+                                    <td>${data.usuario.nome}</td>
+                                    <td>${data.usuario.email}</td>
+            `;
         })
         .catch(error => {
             console.error('Erro:', error);
