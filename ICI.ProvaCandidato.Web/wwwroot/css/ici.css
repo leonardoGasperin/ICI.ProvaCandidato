@@ -1,0 +1,47 @@
+﻿.tag-show {
+    padding-left: 7px;
+    padding-right: 7px;
+    background-color: #a46ed4;
+    border-style: solid;
+    border-color: #cbcbcb;
+    border-width: 1px;
+    border-radius: 25px;
+    color: #cbcbcb;
+    cursor: pointer;
+}
+
+#tagConteiner {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+#tabNoticias {
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+#tabTag {
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
