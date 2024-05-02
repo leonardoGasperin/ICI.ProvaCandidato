@@ -2,13 +2,26 @@ document.addEventListener("DOMContentLoaded", function () {
     onGetDataAsync();
 });
 
-function editor(noticia) {
+function editor(item) {
+    console.log(item)
+    var titulo = document.querySelector('input[name="noticiaTitulo"]');
+    var texto = document.querySelector('textarea[name="noticiaText"]');
+    var nome = document.querySelector('input[name="usuarioNome"]');
+    var email = document.querySelector('input[name="usuarioEmail"]');
+    var descricao = document.querySelector('input[name="noticiaTag"]');
+
+    titulo.value = item.titulo;
+    texto.value = item.texto;
+    nome.value = item.usuario.nome;
+    email.value = item.usuario.email;
+    descricao.value = item.tag.descricao;
+
     const data = {
         noticia: {
-            refId: 0,
+            refId: item.refId,
             titulo: document.querySelector('input[name="noticiaTitulo"]').value,
             texto: document.querySelector('textarea[name="noticiaText"]').value,
-            usuarioId: 0
+            usuarioId: item.usuarioId
         },
         usuario: {
             nome: document.querySelector('input[name="usuarioNome"]').value,
@@ -36,6 +49,7 @@ function excluir(noticiaId) {
         console.error('Erro:', error);
     });
 }
+
 document.getElementById('noticiaTable').addEventListener('click', function (event) {
     if (event.target && event.target.tagName === 'SPAN' && event.target.textContent === 'Excluir') {
         var linhaParaExcluir = event.target.closest('tr');
@@ -59,7 +73,7 @@ function onGetDataAsync() {
         .then(data => {
             const tabTags = document.getElementById("noticiaTable");
             data.forEach(function (item) {
-
+                console.log(JSON.stringify(item));
                 const textoExibido = item.texto.length > 72 ? item.texto.substring(0, 72) + '...' : item.texto;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -71,7 +85,7 @@ function onGetDataAsync() {
                                     <td>${textoExibido}</td>
                                     <td>${item.usuario.nome}</td>
                                     <td>${item.usuario.email}</td>
-                                    <td><span onclick="editor(${encodeURIComponent(JSON.stringify(item))})">Editar</span></td>
+                                    <td><span onclick="editor(${JSON.stringify(item).replace(/"/g, '&quot;') })">Editar</span></td>
                                     <td><span onclick="excluir(${encodeURIComponent(JSON.stringify(item.refId))})">Excluir</span></td>`;
                 tabTags.appendChild(tr);
                 tr.id = item.refId;
@@ -221,7 +235,7 @@ document.getElementById('createNoticiaForm').addEventListener('submit', function
                                     <td>${textoExibido}</td>
                                     <td>${data.usuario.nome}</td>
                                     <td>${data.usuario.email}</td>
-                                    <td><span onclick="editor(${encodeURIComponent(JSON.stringify(data.noticia))})">Editar</span></td>
+                                    <td><span onclick="editor(${encodeURIComponent(JSON.stringify(data).replace(/"/g, '&quot;'))})">Editar</span></td>
                                     <td><span onclick="excluir(${encodeURIComponent(JSON.stringify(data.noticia.refId))})">Excluir</span></td>
                 </tr>
             `;
