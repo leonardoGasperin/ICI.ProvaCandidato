@@ -1,4 +1,5 @@
 ﻿using ICI.ProvaCandidato.Dados.Dto;
+using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,12 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
                 .Select(x => x.ConverterToDto())
                 .ToListAsync();
             return usuarios;
+        }
+
+        public async Task Create(UsuarioDto dto, string senha)
+        {
+            _context.Usuarios.Add(Usuario.MountFromDto(dto, senha));
+            await _context.SaveChangesAsync();
         }
     }
 }
