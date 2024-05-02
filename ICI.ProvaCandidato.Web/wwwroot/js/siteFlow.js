@@ -1,8 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
-    OnGetAsync();
+    onGetDataAsync();
 });
 
-function OnGetAsync() {
+function editor(noticia) {
+}
+function excluir(noticia) {
+
+}
+
+function onGetDataAsync() {
     fetch("https://localhost:5001/api/Tag")
         .then(response => response.json())
         .then(data => {
@@ -26,7 +32,9 @@ function OnGetAsync() {
                                     </div></td>
                                     <td>${textoExibido}</td>
                                     <td>${item.usuario.nome}</td>
-                                    <td>${item.usuario.email}</td>`;
+                                    <td>${item.usuario.email}</td>
+                                    <td><span onclick="editor(${encodeURIComponent(JSON.stringify(item))})">Editar</span></td>
+                                    <td><span onclick="excluir(${encodeURIComponent(JSON.stringify(item))})">Excluir</span></td>`;
                 tabTags.appendChild(tr);
             });
         })
