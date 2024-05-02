@@ -16,9 +16,20 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
             _context = context;
         }
 
-        public async Task<bool> AlreadyExist(string dtoDescricao)
+        public async Task<bool> AlreadyExist(string descricao)
         {
-            return await _context.Tags.AnyAsync(x => x.Descricao == dtoDescricao);
+            return await _context.Tags.AnyAsync(x => x.Descricao == descricao);
+        }
+
+        public async Task<bool> CannotDelete(string descricao)
+        {
+            if (await AlreadyExist(descricao))
+            {
+                var tagToDelete =  _context.Tags.FirstOrDefault(x => x.Descricao == descricao);
+                var t = _context.TagNoticias.AsNoTracking().FirstOrDefault();
+                return await _context.TagNoticias.AsNoTracking().AnyAsync(x => x.TagId == tagToDelete.Id);
+            }
+            return true;
         }
     }
 }

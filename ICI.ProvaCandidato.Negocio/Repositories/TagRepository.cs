@@ -44,5 +44,12 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
             _context.Tags.Update(tag);
             await _context.SaveChangesAsync();
         }
+
+        public async Task Delete(string descricao)
+        {
+            var tagToDelete = _context.Tags.FirstOrDefault(x => x.Descricao.Equals(descricao));
+            _context.Tags.Remove(tagToDelete);
+            await _context.SaveChangesAsync();
+        }
     }
 }

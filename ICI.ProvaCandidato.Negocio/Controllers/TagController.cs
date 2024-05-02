@@ -68,5 +68,25 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
 
             return Ok(dto);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string descricao)
+        {
+            var cannotDelete = await _rule.CannotDelete(descricao);
+
+            try
+            {
+                if (!cannotDelete)
+                {
+                    await _repotory.Delete(descricao);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+
+            return Ok();
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace ICI.ProvaCandidato.Dados.Interface
 {
     public interface ITagRuleRepository
     {
-        public Task<bool> AlreadyExist(string dtoDescricao);
+        public Task<bool> AlreadyExist(string descricao);
+        public Task<bool> CannotDelete(string descricao);
     }
 }
