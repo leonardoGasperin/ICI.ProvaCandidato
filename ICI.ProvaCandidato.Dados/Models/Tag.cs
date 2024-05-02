@@ -13,7 +13,7 @@ namespace ICI.ProvaCandidato.Dados.Models
             };
         }
 
-        public static Tag Mount(TagDto tag)
+        public static Tag MountFromDto(TagDto tag)
         {
             return new Tag()
             {

@@ -33,7 +33,7 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
 
         public async Task Create(TagDto dto)
         {
-            _context.Tags.Add(Tag.Mount(dto));
+            _context.Tags.Add(Tag.MountFromDto(dto));
             await _context.SaveChangesAsync();
         }
 
