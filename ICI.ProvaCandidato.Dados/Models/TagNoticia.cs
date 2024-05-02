@@ -3,8 +3,8 @@
     public class TagNoticia : Entity
     {
         public int NoticiaId { get; set; }
-        public Noticia Noticia { get; set;}
+        public virtual Noticia Noticia { get; set;}
         public int TagId { get; set; }
-        public int Tag { get; set; }
+        public virtual int Tag { get; set; }
     }
 }

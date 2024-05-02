@@ -10,10 +10,10 @@ namespace ICI.ProvaCandidato.Negocio.DbContexts
         public DbSet<Noticia> Noticias { get; set; } = null!;
         public DbSet<Tag> Tags { get; set; } = null!;
         public DbSet<TagNoticia> TagNoticias { get; set; } = null!;
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        
+        public SqliteContext(DbContextOptions<SqliteContext> options)
+        : base(options)
         {
-            optionsBuilder.UseSqlite("Data Source=ICINoticias.db;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

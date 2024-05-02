@@ -1,9 +1,12 @@
 using ICI.ProvaCandidato.Negocio.DbContexts;
+using ICI.ProvaCandidato.Negocio.Interfaces;
+using ICI.ProvaCandidato.Negocio.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace ICI.ProvaCandidato.Web
 {
@@ -16,20 +19,24 @@ namespace ICI.ProvaCandidato.Web
 
 		public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllersWithViews();
-			services.AddDbContext<SqliteContext>(opt =>
+            services.AddSwaggerGen(opt =>
+            {
+                opt.DescribeAllParametersInCamelCase();
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "ICI Noticias", Version = "v1" });
+            });
+            services.AddDbContext<SqliteContext>(opt =>
 			{
                 opt.UseSqlite(Configuration
                    .GetConnectionString("DefaultConnection"))
                    .UseLazyLoadingProxies();
             });
 			services.AddTransient<SqliteContext>();
-		}
+            services.AddScoped<INoticiaRepository, NoticiaRepository>();
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			app.UseDeveloperExceptionPage();
@@ -39,7 +46,14 @@ namespace ICI.ProvaCandidato.Web
 
 			app.UseRouting();
 
-			app.UseAuthorization();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ICI Noticias V1");
+            });
+            app.UseDeveloperExceptionPage();
+
+            app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
