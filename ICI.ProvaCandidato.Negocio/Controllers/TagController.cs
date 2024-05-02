@@ -48,5 +48,25 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
 
             return Ok(dto);
         }
+
+        [HttpPatch]
+        public async Task<IActionResult> Edit(string descricaoOriginal, TagDto dto)
+        {
+            var exist = await _rule.AlreadyExist(dto.Descricao);
+
+            try
+            {
+                if (!exist)
+                {
+                    await _repotory.Update(descricaoOriginal, dto);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
+
+            return Ok(dto);
+        }
     }
 }

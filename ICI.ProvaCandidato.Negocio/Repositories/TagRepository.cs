@@ -36,5 +36,13 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
             _context.Tags.Add(Tag.Mount(dto));
             await _context.SaveChangesAsync();
         }
+
+        public async Task Update(string descricaoOriginal, TagDto dto)
+        {
+            var tag = _context.Tags.FirstOrDefault(x => x.Descricao == descricaoOriginal);
+            tag.Descricao = dto.Descricao;
+            _context.Tags.Update(tag);
+            await _context.SaveChangesAsync();
+        }
     }
 }
