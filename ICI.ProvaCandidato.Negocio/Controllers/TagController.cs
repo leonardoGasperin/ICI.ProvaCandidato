@@ -1,6 +1,5 @@
 ﻿using ICI.ProvaCandidato.Dados.Dto;
 using ICI.ProvaCandidato.Dados.Interface;
-using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -71,7 +70,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(string descricao)
+        public async Task<IActionResult> Delete([FromBody]string descricao)
         {
             var cannotDelete = await _rule.CannotDelete(descricao);
 
@@ -87,7 +86,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
                 return BadRequest(ex.ToString());
             }
 
-            return Ok();
+            return Ok(descricao);
         }
     }
 }

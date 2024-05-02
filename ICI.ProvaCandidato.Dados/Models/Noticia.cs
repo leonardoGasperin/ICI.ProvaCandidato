@@ -14,7 +14,8 @@ namespace ICI.ProvaCandidato.Dados.Models
             return new NoticiaDto() {
                 Titulo = Titulo,
                 Texto = Texto,
-                UsuarioId = UsuarioId
+                UsuarioId = UsuarioId,
+                Usuario = Usuario
             };
         }
 

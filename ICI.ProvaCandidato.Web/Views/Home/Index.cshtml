@@ -11,27 +11,47 @@
     <div class="tabs">
         <ul class="nav nav-tabs" id="homeTabs" role="tablist">
             <li class="nav-item">
-                <button id="tab1-btn" type="button" class="btn btn-secondary active" data-target="#tabTags">Tags</button>
+                <button id="tag-btn" type="button" class="btn btn-secondary active" data-target="#tabTags">Tags</button>
             </li>
             <li class="nav-item">
-                <button id="tab2-btn" type="button" class="btn btn-secondary" data-target="#tabNoticias">Noticias</button>
+                <button id="noticia-btn" type="button" class="btn btn-secondary" data-target="#tabNoticias">Noticias</button>
+            </li>
+            <li class="nav-item">
+                <button id="leitura-btn" type="button" class="btn btn-secondary" data-target="#tabLeitura">Noticias</button>
             </li>
         </ul>
         <div class="tab-content">
             <div id="tabTags" class="tab-pane active">
                 <div>
                     <h2>TAGS</h2>
-                    <div id="tagConteiner"></div>
+                    <div>
+                        <form id="createTagForm">
+                            <input name="createTag" type="text" maxlength="15" required />
+                            <button type="submit">Criar Tag </button>
+                        </form>
+                        <br />
+                        <form id="deleteTagForm">
+                            <input name="deleteTag" type="text" maxlength="15" required />
+                            <button type="submit">Deletar Tag </button>
+                        </form>
+                    </div>
+                    <hr style="color: black; width: 30rem;">
+                    <div id="tagConteiner">
+                    </div>
+                    <hr style="color: black; width: 30rem;">
                 </div>
             </div>
             <div id="tabNoticias" class="tab-pane">
                 <div>
                     <h2>Noticias</h2>
+
                     <table>
                         <thead>
                             <tr>
                                 <th>Título</th>
                                 <th>Texto</th>
+                                <th>Usuario</th>
+                                <th>Email</th>
                             </tr>
                         </thead>
                         <tbody id="noticiaTable">
@@ -39,56 +59,12 @@
                     </table>
                 </div>
             </div>
+            <div id="tabLeitura" class="tab-pane">
+                <h2>Leitura</h2>
+                <div id="leituraConteiner"></div>
+            </div>
         </div>
     </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        minhaFuncao();
-    });
-
-    function minhaFuncao() {
-        fetch("https://localhost:5001/api/Tag")
-            .then(response => response.json())
-            .then(data => {
-                const tabTags = document.getElementById("tagConteiner");
-                console.log(data);
-                data.forEach(function (item) {
-                    tabTags.innerHTML += `<span class="tag-show">${item.descricao}<span>`;
-                });
-            })
-        fetch("https://localhost:5001/api/Noticia")
-            .then(response => response.json())
-            .then(data => {
-                const tabTags = document.getElementById("noticiaTable");
-                console.log(data);
-                data.forEach(function (item) {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${item.titulo}</td>
-                                    <td>${item.texto}</td>`;
-                    tabTags.appendChild(tr);
-                });
-                console.log(data)
-            })
-    }
-
-    document.querySelectorAll('.tabs button').forEach(btn => {
-        btn.addEventListener('click', function () {
-            document.querySelectorAll('.tabs button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            this.classList.add('active');
-
-            const targetId = this.getAttribute('data-target');
-            document.querySelectorAll('.tab-content .tab-pane').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            const targetTab = document.querySelector(targetId);
-            targetTab.classList.add('active');
-            document.querySelectorAll('.tab-content .tab-pane').forEach(tab => {
-                tab.style.display = (tab === targetTab) ? 'flex' : 'none';
-            });
-        });
-    });
-</script>
+<script src="~/js/siteFlow.js"></script>

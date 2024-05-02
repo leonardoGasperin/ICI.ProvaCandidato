@@ -1,4 +1,23 @@
-﻿.tag-show {
+﻿table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+#homeTab{
+    display: flex;
+}
+
+.tag-show {
     padding-left: 7px;
     padding-right: 7px;
     background-color: #a46ed4;
@@ -6,7 +25,7 @@
     border-color: #cbcbcb;
     border-width: 1px;
     border-radius: 25px;
-    color: #cbcbcb;
+    color: white;
     cursor: pointer;
 }
 
@@ -31,17 +50,7 @@
     justify-content: center;
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-}
-
-th {
-    background-color: #f2f2f2;
+.leitura-model {
+    display: flex;
+    flex-direction: column;
 }
