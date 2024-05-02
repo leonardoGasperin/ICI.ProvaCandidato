@@ -123,6 +123,48 @@ document.getElementById('deleteTagForm').addEventListener('submit', function (ev
         });
 });
 
+document.getElementById('createNoticiaForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const data = {
+        noticia: {
+            refId: 0,
+            titulo: document.querySelector('input[name="noticiaTitulo"]').value,
+            texto: document.querySelector('textarea[name="noticiaText"]').value,
+            usuarioId: 0
+        },
+        usuario: {
+            nome: document.querySelector('input[name="usuarioNome"]').value,
+            email: document.querySelector('input[name="usuarioEmail"]').value
+        },
+        tag: {
+            descricao: document.querySelector('input[name="noticiaTag"]').value
+        }
+    };
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    const url = 'https://localhost:5001/api/Noticia';
+
+    fetch(url, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao enviar a requisição.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Resposta do servidor:', data);
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+});
+
 document.querySelectorAll('.tabs button').forEach(btn => {
     btn.addEventListener('click', function () {
         const target = event.target;

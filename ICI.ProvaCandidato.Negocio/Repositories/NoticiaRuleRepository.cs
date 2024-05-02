@@ -17,5 +17,15 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
         {
             return await _context.TagNoticias.AnyAsync(x => x.Id == id);
         }
+
+        public async Task<bool> NeedCreatNewAccount(string email)
+        {
+            return await _context.Usuarios.AnyAsync(x => x.Email.Equals(email));
+        }
+
+        public async Task<bool> NeedCreateNewTag(string descricao)
+        {
+            return await _context.Tags.AnyAsync(x => x.Descricao.Equals(descricao));
+        }
     }
 }

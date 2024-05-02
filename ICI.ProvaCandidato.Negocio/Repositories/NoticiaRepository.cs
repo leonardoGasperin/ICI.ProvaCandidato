@@ -29,9 +29,20 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
             return noticias;
         }
 
-        public async Task Create(NoticiaDto dto) 
+        public async Task Create(NoticiaDto dto, Usuario usuario, Tag tag) 
         {
-            _context.Noticias.Add(Noticia.MountFromDto(dto));
+            var newNoticia = Noticia.MountFromDto(dto);
+            newNoticia.UsuarioId = usuario.Id;
+            _context.Noticias.Add(newNoticia);
+            await _context.SaveChangesAsync();
+
+            var tagNoticiaRelation = new TagNoticia()
+            {
+                NoticiaId = newNoticia.Id,
+                TagId = tag.Id,
+            };
+
+            _context.TagNoticias.Add(tagNoticiaRelation);
             await _context.SaveChangesAsync();
         }
 
@@ -49,6 +60,40 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
             var noticiaToDelete = _context.Noticias.FirstOrDefault(x => x.Id.Equals(noticiaId));
             _context.Noticias.Remove(noticiaToDelete);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Usuario> GetUsuarioReferencia(UsuarioDto dto)
+        {
+            return await _context.Usuarios
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Email.Equals(dto.Email));
+        }
+
+        public async Task<Tag> GetTagReferencia(TagDto dto)
+        {
+            return await _context.Tags
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Descricao.Equals(dto.Descricao));
+        }
+
+        public async Task<Usuario> CreateUsuarioToNoticia(UsuarioDto newUsuario)
+        {
+            Usuario usuario = Usuario.MountFromDto(newUsuario, "SenhaPadrão");
+
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            return usuario;
+        }
+
+        public async Task<Tag> CreateTagToNoticia(string newTag)
+        {
+            Tag tag = Tag.MountFromDto(new() { Descricao = newTag });
+
+            _context.Tags.Add(tag);
+            await _context.SaveChangesAsync();
+
+            return tag;
         }
     }
 }

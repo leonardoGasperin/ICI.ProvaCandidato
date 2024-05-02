@@ -1,11 +1,7 @@
-﻿@page
-@using ICI.ProvaCandidato.Web.Pages.Home
-@model HomeModel
-@if (ViewData != null)
+﻿@if (ViewData != null)
 {
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "ICI-NEWS";
 }
-
 
 <div class="text-center">
     <div class="tabs">
@@ -27,12 +23,12 @@
                     <div>
                         <form id="createTagForm">
                             <input name="createTag" type="text" maxlength="15" required />
-                            <button type="submit">Criar Tag </button>
+                            <button type="submit">Criar Tag</button>
                         </form>
                         <br />
                         <form id="deleteTagForm">
                             <input name="deleteTag" type="text" maxlength="15" required />
-                            <button type="submit">Deletar Tag </button>
+                            <button type="submit">Deletar Tag</button>
                         </form>
                     </div>
                     <hr style="color: black; width: 30rem;">
@@ -44,7 +40,18 @@
             <div id="tabNoticias" class="tab-pane">
                 <div>
                     <h2>Noticias</h2>
-
+                    <div>
+                        <form id="createNoticiaForm" style="display: flex; flex-direction:column">
+                            <input name="noticiaTitulo" type="text" maxlength="20" required placeholder="Titulo" />
+                            <input name="noticiaTag" type="text" maxlength="20" required placeholder="Tags"/>
+                            <textarea name="noticiaText" maxlength="250" required placeholder="Noticia"></textarea>
+                            <input name="usuarioNome" type="text" maxlength="50" required placeholder="Nome do usuario" />
+                            <input name="usuarioEmail" type="text" maxlength="20" required placeholder="Email do usuario"/>
+                            <button type="submit">Publicar  </button>
+                            <button type="reset">Limpar formulario</button>
+                        </form>
+                    </div>
+                    <hr style="color: black; width: 30rem;">
                     <table>
                         <thead>
                             <tr>
