@@ -12,19 +12,19 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
     [Route("api/[controller]")]
     public class TagController : ControllerBase
     {
-        public readonly ITagRepository _repotory;
+        public readonly ITagRepository _repository;
         public readonly ITagRuleRepository _rule;
 
         public TagController(ITagRepository repotory, ITagRuleRepository rule)
         {
-            _repotory = repotory;
+            _repository = repotory;
             _rule = rule;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var tags = await _repotory.GetAll();
+            var tags = await _repository.GetAll();
 
             return Ok(tags);
         }
@@ -38,7 +38,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
             {
                 if (!exist)
                 {
-                    await _repotory.Create(dto);
+                    await _repository.Create(dto);
                 }
             }
             catch(Exception ex)
@@ -58,7 +58,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
             {
                 if (!exist)
                 {
-                    await _repotory.Update(descricaoOriginal, dto);
+                    await _repository.Update(descricaoOriginal, dto);
                 }
             }
             catch (Exception ex)
@@ -78,7 +78,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
             {
                 if (!cannotDelete)
                 {
-                    await _repotory.Delete(descricao);
+                    await _repository.Delete(descricao);
                 }
             }
             catch (Exception ex)

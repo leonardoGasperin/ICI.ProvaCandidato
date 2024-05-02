@@ -14,7 +14,17 @@ namespace ICI.ProvaCandidato.Dados.Models
             return new NoticiaDto() {
                 Titulo = Titulo,
                 Texto = Texto,
-                Usuario = Usuario.ConverterToDto()
+                UsuarioId = UsuarioId
+            };
+        }
+
+        public static Noticia MountFromDto(NoticiaDto dto)
+        {
+            return new Noticia()
+            {
+                Titulo = dto.Titulo,
+                Texto = dto.Texto,
+                UsuarioId = dto.UsuarioId
             };
         }
     }
