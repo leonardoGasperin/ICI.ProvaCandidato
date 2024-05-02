@@ -6,20 +6,20 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class NoticiaController : ControllerBase
+    public class UsuarioController : ControllerBase
     {
-        private readonly INoticiaRepository _repository;
+        public readonly IUsuarioRepository _repository;
 
-        public NoticiaController(INoticiaRepository context)
+        public UsuarioController(IUsuarioRepository repository)
         {
-            _repository = context;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var noticias = await _repository.GetAll();
-            return Ok(noticias);
+            var usuarios = await _repository.GetAll();
+            return Ok(usuarios);
         }
     }
 }

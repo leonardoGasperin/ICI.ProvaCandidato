@@ -1,5 +1,4 @@
 ﻿using ICI.ProvaCandidato.Dados.Dto;
-using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -9,24 +8,22 @@ using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Repositories
 {
-    public class NoticiaRepository : INoticiaRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         public readonly SqliteContext _context;
 
-        public NoticiaRepository(SqliteContext context)
+        public UsuarioRepository(SqliteContext context)
         {
             _context = context;
         }
 
-        public async Task<List<NoticiaDto>> GetAll()
+        public async Task<List<UsuarioDto>> GetAll()
         {
-            var noticias = await _context.Noticias
+            var usuarios = await _context.Usuarios
                 .AsNoTracking()
-                .Include(x => x.Usuario)
                 .Select(x => x.ConverterToDto())
                 .ToListAsync();
-
-            return noticias;
+            return usuarios;
         }
     }
 }
