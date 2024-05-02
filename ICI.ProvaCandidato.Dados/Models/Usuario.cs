@@ -16,5 +16,15 @@ namespace ICI.ProvaCandidato.Dados.Models
                 Email = Email
             };
         }
+
+        public static Usuario MountFromDto(UsuarioDto dto, string senha)
+        {
+            return new Usuario()
+            {
+                Nome = dto.Nome,
+                Email = dto.Email,
+                Senha = senha
+            };
+        }
     }
 }

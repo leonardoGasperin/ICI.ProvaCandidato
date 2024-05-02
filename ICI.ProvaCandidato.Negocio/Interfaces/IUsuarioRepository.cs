@@ -7,5 +7,6 @@ namespace ICI.ProvaCandidato.Negocio.Interfaces
     public interface IUsuarioRepository
     {
         public Task<List<UsuarioDto>> GetAll();
+        public Task Create(UsuarioDto dto, string senha);
     }
 }
