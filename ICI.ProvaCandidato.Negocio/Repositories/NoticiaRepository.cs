@@ -22,16 +22,8 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
         {
             var noticias = await _context.Noticias
                 .AsNoTracking()
-                .Include(
-                    x => 
-                        x.Usuario)
-                .Select(
-                    x => new NoticiaDto 
-                    { 
-                        Titulo = x.Titulo,
-                        Texto = x.Texto,
-                        Usuario = x.Usuario
-                    })
+                .Include(x => x.Usuario)
+                .Select(x => x.ConverterToDto())
                 .ToListAsync();
 
             return noticias;
