@@ -1,8 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@page
+@using ICI.ProvaCandidato.Web.Pages.Home
+@model HomeModel
+@if (ViewData != null)
+{
+    ViewData["Title"] = "Index";
 }
 
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="tabs">
+        <ul class="nav nav-tabs" id="homeTabs" role="tablist">
+            <li class="nav-item">
+                <button id="tab1-btn" type="button" class="btn btn-secondary active" data-target="#tab1">Tags</button>
+            </li>
+            <li class="nav-item">
+                <button id="tab2-btn" type="button" class="btn btn-secondary" data-target="#tab2">Noticias</button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab1" class="tab-pane active">
+            </div>
+            <div id="tab2" class="tab-pane">
+                Noticias
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        minhaFuncao();
+    });
+
+    function minhaFuncao() {
+        fetch("https://localhost:5001/api/Tag")
+            .then(response => response.json())
+            .then(data => {
+                const tabTags = document.getElementById("tab1");
+                console.log(data);
+                data.forEach(function (item) {
+                    tabTags.innerHTML += item.descricao;
+                });
+                data;
+            })
+    }
+
+    document.querySelectorAll('.tabs button').forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.tabs button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            this.classList.add('active');
+            const targetId = this.getAttribute('data-target');
+            document.querySelectorAll('.tab-content .tab-pane').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(targetId).classList.add('active');
+        });
+    });
+</script>

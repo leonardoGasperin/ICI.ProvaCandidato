@@ -23,6 +23,7 @@ namespace ICI.ProvaCandidato.Web
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllersWithViews();
+            services.AddRazorPages();
             services.AddSwaggerGen(opt =>
             {
                 opt.DescribeAllParametersInCamelCase();
@@ -66,7 +67,8 @@ namespace ICI.ProvaCandidato.Web
 				endpoints.MapControllerRoute(
 									name: "default",
 									pattern: "{controller=Home}/{action=Index}/{id?}");
-			});
+                endpoints.MapRazorPages();
+            });
 		}
 	}
 }

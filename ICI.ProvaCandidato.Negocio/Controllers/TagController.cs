@@ -4,6 +4,7 @@ using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Controllers
@@ -22,11 +23,11 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<List<TagDto>> GetAll()
         {
             var tags = await _repository.GetAll();
 
-            return Ok(tags);
+            return tags;
         }
 
         [HttpPost]
