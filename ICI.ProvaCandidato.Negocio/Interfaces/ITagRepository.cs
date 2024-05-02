@@ -7,5 +7,6 @@ namespace ICI.ProvaCandidato.Negocio.Interfaces
     public interface ITagRepository
     {
         public Task<List<TagDto>> GetAll();
+        public Task Create(TagDto dto);
     }
 }

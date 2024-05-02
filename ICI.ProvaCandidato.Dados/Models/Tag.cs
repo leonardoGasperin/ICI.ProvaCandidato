@@ -12,5 +12,13 @@ namespace ICI.ProvaCandidato.Dados.Models
                 Descricao = Descricao,
             };
         }
+
+        public static Tag Mount(TagDto tag)
+        {
+            return new Tag()
+            {
+                Descricao = tag.Descricao
+            };
+        }
     }
 }
