@@ -47,6 +47,7 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
 
                 _context.TagNoticias.Add(tagNoticiaRelation);
                 await _context.SaveChangesAsync();
+                dto.RefId = newNoticia.Id;
             }
             catch (Exception ex)
             {

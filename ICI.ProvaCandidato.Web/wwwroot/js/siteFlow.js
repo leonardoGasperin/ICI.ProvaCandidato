@@ -3,10 +3,51 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function editor(noticia) {
+    const data = {
+        noticia: {
+            refId: 0,
+            titulo: document.querySelector('input[name="noticiaTitulo"]').value,
+            texto: document.querySelector('textarea[name="noticiaText"]').value,
+            usuarioId: 0
+        },
+        usuario: {
+            nome: document.querySelector('input[name="usuarioNome"]').value,
+            email: document.querySelector('input[name="usuarioEmail"]').value
+        },
+        tag: {
+            descricao: document.querySelector('input[name="noticiaTag"]').value
+        }
+    };
 }
-function excluir(noticia) {
 
+function excluir(noticiaId) {
+    fetch(`https://localhost:5001/api/Noticia/?noticiaId=` + noticiaId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao excluir notícia');
+        }
+        //var linhaParaExcluir = document.getElementById(noticiaId);
+        //if (linhaParaExcluir) {
+        //    linhaParaExcluir.remove();
+        //}
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+    });
 }
+document.getElementById('noticiaTable').addEventListener('click', function (event) {
+    if (event.target && event.target.tagName === 'SPAN' && event.target.textContent === 'Excluir') {
+        var linhaParaExcluir = event.target.closest('tr');
+        if (linhaParaExcluir) {
+            linhaParaExcluir.remove();
+        }
+    }
+});
 
 function onGetDataAsync() {
     fetch("https://localhost:5001/api/Tag")
@@ -25,7 +66,8 @@ function onGetDataAsync() {
 
                 const textoExibido = item.texto.length > 72 ? item.texto.substring(0, 72) + '...' : item.texto;
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td><div style="cursor: pointer"
+                tr.innerHTML = `
+                                <td><div style="cursor: pointer"
                                              onclick="GoToLeitura('tabLeitura', 
                                              '${encodeURIComponent(JSON.stringify(item))}')">
                                                 ${item.titulo}
@@ -34,8 +76,9 @@ function onGetDataAsync() {
                                     <td>${item.usuario.nome}</td>
                                     <td>${item.usuario.email}</td>
                                     <td><span onclick="editor(${encodeURIComponent(JSON.stringify(item))})">Editar</span></td>
-                                    <td><span onclick="excluir(${encodeURIComponent(JSON.stringify(item))})">Excluir</span></td>`;
+                                    <td><span onclick="excluir(${encodeURIComponent(JSON.stringify(item.refId))})">Excluir</span></td>`;
                 tabTags.appendChild(tr);
+                tr.id = item.refId;
             });
         })
 }
@@ -173,6 +216,7 @@ document.getElementById('createNoticiaForm').addEventListener('submit', function
             const textoExibido = data.noticia.texto.length > 72 ? data.noticia.texto.substring(0, 72) + '...' : data.noticia.texto;
 
             Noticiatabela.innerHTML += `
+                <tr data-refid="${data.noticia.refId}">
                 <td><div style="cursor: pointer"
                                              onclick="GoToLeitura('tabLeitura',
                                              '${encodeURIComponent(JSON.stringify(data.noticia))}')">
@@ -181,6 +225,9 @@ document.getElementById('createNoticiaForm').addEventListener('submit', function
                                     <td>${textoExibido}</td>
                                     <td>${data.usuario.nome}</td>
                                     <td>${data.usuario.email}</td>
+                                    <td><span onclick="editor(${encodeURIComponent(JSON.stringify(data.noticia))})">Editar</span></td>
+                                    <td><span onclick="excluir(${encodeURIComponent(JSON.stringify(data.noticia.refId))})">Excluir</span></td>
+                </tr>
             `;
         })
         .catch(error => {
