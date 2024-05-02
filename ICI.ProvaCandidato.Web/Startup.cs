@@ -36,6 +36,7 @@ namespace ICI.ProvaCandidato.Web
 			services.AddTransient<SqliteContext>();
             services.AddScoped<INoticiaRepository, NoticiaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
         }
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
