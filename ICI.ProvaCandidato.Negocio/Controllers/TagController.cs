@@ -40,6 +40,10 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
                 {
                     await _repository.Create(dto);
                 }
+                else
+                {
+                    dto = new();
+                }
             }
             catch(Exception ex)
             {
@@ -79,6 +83,10 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
                 if (!cannotDelete)
                 {
                     await _repository.Delete(descricao);
+                }
+                else
+                {
+                    return NotFound();
                 }
             }
             catch (Exception ex)

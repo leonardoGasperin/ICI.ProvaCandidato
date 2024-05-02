@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    minhaFuncao();
+    OnGetAsync();
 });
 
-function minhaFuncao() {
+function OnGetAsync() {
     fetch("https://localhost:5001/api/Tag")
         .then(response => response.json())
         .then(data => {
@@ -47,7 +47,7 @@ function GoToLeitura(tabid, item) {
                         <span><b>Contato: </b>${noticia.usuario.email}</span>
                     </div>
                     <hr style="color: black; width: 30rem;">
-                    <span>${noticia.texto}</span>
+                    <span style='word-wrap: break-word;'>${noticia.texto}</span>
             </div>
         `
     const leituraDiv = document.getElementById('leituraConteiner');
@@ -75,9 +75,13 @@ document.getElementById('createTagForm').addEventListener('submit', function (ev
             return response.json();
         })
         .then(data => {
-            const tagsDiv = document.getElementById("tagConteiner");
-            tagsDiv.innerHTML += `<span class="tag-show">${inputValue}<span>`
-            console.log('Resposta da API:', data);
+            if (data.descricao !== null) {
+                const tagsDiv = document.getElementById("tagConteiner");
+                tagsDiv.innerHTML += `<span class="tag-show">${inputValue}<span>`
+            }
+            else {
+                alert(`Ja existe uma Tag com o nome '${inputValue}'`);
+            }
         })
         .catch(error => {
             console.error('Erro:', error);
@@ -97,11 +101,11 @@ document.getElementById('deleteTagForm').addEventListener('submit', function (ev
         body: JSON.stringify(inputValue)
     })
         .then(response => {
-            if (!response.ok) {
+            if (response.status !== 404 && !response.ok) {
                 throw new Error('Ocorreu um erro ao tentar excluir a descrição.');
             }
-            if (response.status === 204) {
-                console.log('Descrição excluída com sucesso.');
+            if (response.status === 404) {
+                alert(`Tag '${inputValue}' esta vinculada a uma noticia ou foi não encontrada`);
                 return;
             }
         })
