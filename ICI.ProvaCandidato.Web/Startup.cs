@@ -12,17 +12,17 @@ using Microsoft.OpenApi.Models;
 namespace ICI.ProvaCandidato.Web
 {
     public class Startup
-	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddControllersWithViews();
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSwaggerGen(opt =>
             {
@@ -30,12 +30,11 @@ namespace ICI.ProvaCandidato.Web
                 opt.SwaggerDoc("v1", new OpenApiInfo { Title = "ICI Noticias", Version = "v1" });
             });
             services.AddDbContext<SqliteContext>(opt =>
-			{
-                opt.UseSqlite(Configuration
-                   .GetConnectionString("DefaultConnection"))
-                   .UseLazyLoadingProxies();
+            {
+                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+                    .UseLazyLoadingProxies();
             });
-			services.AddTransient<SqliteContext>();
+            services.AddTransient<SqliteContext>();
             services.AddScoped<INoticiaRepository, NoticiaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
@@ -45,14 +44,14 @@ namespace ICI.ProvaCandidato.Web
             services.AddScoped<ITagNoticiaRepository, TagNoticiaRepository>();
         }
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			app.UseDeveloperExceptionPage();
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseDeveloperExceptionPage();
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
-			app.UseRouting();
+            app.UseRouting();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -63,13 +62,14 @@ namespace ICI.ProvaCandidato.Web
 
             app.UseAuthorization();
 
-			app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-									name: "default",
-									pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
                 endpoints.MapRazorPages();
             });
-		}
-	}
+        }
+    }
 }

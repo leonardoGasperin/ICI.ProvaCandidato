@@ -6,19 +6,14 @@ namespace ICI.ProvaCandidato.Dados.Models
     {
         public string Descricao { get; set; }
 
-        public TagDto ConverterToDto() 
+        public TagDto ConverterToDto()
         {
-            return new TagDto(){
-                Descricao = Descricao,
-            };
+            return new TagDto() { Descricao = Descricao, };
         }
 
         public static Tag MountFromDto(TagDto tag)
         {
-            return new Tag()
-            {
-                Descricao = tag.Descricao
-            };
+            return new Tag() { Descricao = tag.Descricao };
         }
     }
 }

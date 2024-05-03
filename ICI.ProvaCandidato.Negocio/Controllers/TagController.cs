@@ -1,10 +1,10 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 using ICI.ProvaCandidato.Dados.Interface;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Controllers
 {
@@ -45,7 +45,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
                     dto = new();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
             }
@@ -74,7 +74,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromBody]string descricao)
+        public async Task<IActionResult> Delete([FromBody] string descricao)
         {
             var cannotDelete = await _rule.CannotDelete(descricao);
 

@@ -1,13 +1,13 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using ICI.ProvaCandidato.Negocio.Requests;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Repositories
 {
@@ -22,8 +22,8 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
 
         public async Task<List<NoticiaDto>> GetAll()
         {
-            var noticias = await _context.Noticias
-                .AsNoTracking()
+            var noticias = await _context
+                .Noticias.AsNoTracking()
                 .Include(x => x.Usuario)
                 .Select(x => x.ConverterToDto())
                 .ToListAsync();
@@ -31,7 +31,7 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
             return noticias;
         }
 
-        public async Task Create(NoticiaDto dto, Usuario usuario, Tag tag) 
+        public async Task Create(NoticiaDto dto, Usuario usuario, Tag tag)
         {
             try
             {
@@ -60,15 +60,18 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
                     Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
                 }
             }
-           
         }
 
         public async Task Update(CreateNoticiaRequest dto)
         {
             var noticia = _context.Noticias.FirstOrDefault(x => x.Id.Equals(dto.Noticia.RefId));
-            var tag = await _context.Tags.FirstOrDefaultAsync(x =>x.Descricao.Equals(dto.Tag.Descricao)) ?? Tag.MountFromDto(dto.Tag);
-            var tagNoticia = await _context.TagNoticias.FirstOrDefaultAsync(x => x.NoticiaId.Equals(dto.Noticia.RefId));
-            
+            var tag =
+                await _context.Tags.FirstOrDefaultAsync(x => x.Descricao.Equals(dto.Tag.Descricao))
+                ?? Tag.MountFromDto(dto.Tag);
+            var tagNoticia = await _context.TagNoticias.FirstOrDefaultAsync(x =>
+                x.NoticiaId.Equals(dto.Noticia.RefId)
+            );
+
             noticia.Titulo = dto.Noticia.Titulo;
             noticia.Texto = dto.Noticia.Texto;
             noticia.UsuarioId = dto.Noticia.UsuarioId;
@@ -97,15 +100,15 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
 
         public async Task<Usuario> GetUsuarioReferencia(UsuarioDto dto)
         {
-            return await _context.Usuarios
-                .AsNoTracking()
+            return await _context
+                .Usuarios.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Email.Equals(dto.Email));
         }
 
         public async Task<Tag> GetTagReferencia(TagDto dto)
         {
-            return await _context.Tags
-                .AsNoTracking()
+            return await _context
+                .Tags.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Descricao.Equals(dto.Descricao));
         }
 

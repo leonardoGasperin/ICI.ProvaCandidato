@@ -1,6 +1,6 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 
 namespace ICI.ProvaCandidato.Negocio.Interfaces
 {

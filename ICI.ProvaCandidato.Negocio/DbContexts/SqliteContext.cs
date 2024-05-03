@@ -10,11 +10,9 @@ namespace ICI.ProvaCandidato.Negocio.DbContexts
         public DbSet<Noticia> Noticias { get; set; } = null!;
         public DbSet<Tag> Tags { get; set; } = null!;
         public DbSet<TagNoticia> TagNoticias { get; set; } = null!;
-        
+
         public SqliteContext(DbContextOptions<SqliteContext> options)
-        : base(options)
-        {
-        }
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

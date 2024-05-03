@@ -1,12 +1,13 @@
-﻿using ICI.ProvaCandidato.Negocio.Interfaces;
+﻿using System.Threading.Tasks;
+using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Controllers
 {
     public class TagNoticiaController : ControllerBase
     {
         public readonly ITagNoticiaRepository _repository;
+
         public TagNoticiaController(ITagNoticiaRepository repository)
         {
             _repository = repository;
@@ -19,7 +20,6 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
 
             return Ok(descricao);
         }
-
 
         [HttpGet("api/GetAllByTag")]
         public async Task<IActionResult> GetAllByTag(string descricao)

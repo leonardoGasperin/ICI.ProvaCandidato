@@ -1,9 +1,9 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
+﻿using System;
+using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 using ICI.ProvaCandidato.Dados.Interface;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Controllers
 {
@@ -39,7 +39,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
                     await _repository.Create(dto, senha);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
