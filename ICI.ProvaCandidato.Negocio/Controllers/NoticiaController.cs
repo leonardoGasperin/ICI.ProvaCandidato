@@ -84,14 +84,9 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int noticiaId)
         {
-            var cannotDelete = await _rule.CannotDelete(noticiaId);
-
             try
             {
-                if (!cannotDelete)
-                {
-                    await _repository.Delete(noticiaId);
-                }
+                await _repository.Delete(noticiaId);
             }
             catch (Exception ex)
             {
