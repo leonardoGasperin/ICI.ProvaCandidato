@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ICI.ProvaCandidato.Dados\ICI.ProvaCandidato.Dados.csproj" />
+    <ProjectReference Include="..\ICI.ProvaCandidato.Dados\ICI.ProvaCandidato.Negocios.csproj" />
   </ItemGroup>
 
 </Project>

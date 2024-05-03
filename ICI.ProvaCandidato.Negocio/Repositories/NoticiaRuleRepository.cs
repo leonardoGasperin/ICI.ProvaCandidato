@@ -14,11 +14,6 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
             _context = context;
         }
 
-        public async Task<bool> CannotDelete(int id)
-        {
-            return await _context.TagNoticias.AnyAsync(x => x.NoticiaId == id);
-        }
-
         public async Task<bool> NeedCreatNewAccount(string email)
         {
             return await _context.Usuarios.AnyAsync(x => x.Email.Equals(email));
