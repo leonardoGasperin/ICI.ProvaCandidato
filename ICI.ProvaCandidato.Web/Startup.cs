@@ -1,49 +1,75 @@
+using ICI.ProvaCandidato.Dados.Interface;
+using ICI.ProvaCandidato.Negocio.DbContexts;
+using ICI.ProvaCandidato.Negocio.Interfaces;
+using ICI.ProvaCandidato.Negocio.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.OpenApi.Models;
 
 namespace ICI.ProvaCandidato.Web
 {
-	public class Startup
-	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
-		public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddControllersWithViews();
-		}
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+            services.AddSwaggerGen(opt =>
+            {
+                opt.DescribeAllParametersInCamelCase();
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "ICI Noticias", Version = "v1" });
+            });
+            services.AddDbContext<SqliteContext>(opt =>
+            {
+                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+                    .UseLazyLoadingProxies();
+            });
+            services.AddTransient<SqliteContext>();
+            services.AddScoped<INoticiaRepository, NoticiaRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagRuleRepository, TagRuleRepository>();
+            services.AddScoped<INoticiaRuleRepository, NoticiaRuleRepository>();
+            services.AddScoped<IUsuarioRuleRepository, UsuarioRuleRepository>();
+            services.AddScoped<ITagNoticiaRepository, TagNoticiaRepository>();
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			app.UseDeveloperExceptionPage();
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseDeveloperExceptionPage();
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
-			app.UseRouting();
+            app.UseRouting();
 
-			app.UseAuthorization();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ICI Noticias V1");
+            });
+            app.UseDeveloperExceptionPage();
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllerRoute(
-									name: "default",
-									pattern: "{controller=Home}/{action=Index}/{id?}");
-			});
-		}
-	}
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
+                endpoints.MapRazorPages();
+            });
+        }
+    }
 }

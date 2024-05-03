@@ -1,8 +1,91 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@if (ViewData != null)
+{
+    ViewData["Title"] = "ICI-NEWS";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="tabs">
+        <ul class="nav nav-tabs" id="homeTabs" role="tablist" style="display:flex; justify-content:space-around">
+            <li class="nav-item">
+                <button id="tag-btn" type="button" class="btn btn-secondary active" data-target="#tabTags">Tags</button>
+            </li>
+            <li class="nav-item">
+                <button id="noticia-btn" type="button" class="btn btn-secondary" data-target="#tabNoticias">Noticias</button>
+            </li>
+            <li class="nav-item">
+                <button id="leitura-btn" type="button" class="btn btn-secondary" data-target="#tabLeitura">Noticias</button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tabTags" class="tab-pane active">
+                <div>
+                    <h2>TAGS</h2>
+                    <div>
+                        <form id="createTagForm">
+                            <input name="createTag" type="text" maxlength="15" required />
+                            <button type="submit">Criar Tag</button>
+                        </form>
+                        <br />
+                        <form id="deleteTagForm">
+                            <input name="deleteTag" type="text" maxlength="15" required />
+                            <button type="submit">Deletar Tag</button>
+                        </form>
+                    </div>
+                    <hr style="color: black; width: 30rem;">
+                    <div id="tagConteiner">
+                    </div>
+                    <hr style="color: black; width: 30rem;">
+                    <div>
+                        <table>
+                            <thead>
+                                <tr id="tableTop">
+                                </tr>
+                            </thead>
+                            <tbody id="noticiaTag">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="tabNoticias" class="tab-pane">
+                <div>
+                    <h2>Noticias</h2>
+                    <div>
+                        <button id="editar" style="display: none">Editar</button>
+                        <button id="cancelarRditar" style="display: none">Cancelar</button>
+                        <form id="createNoticiaForm" style="display: flex; flex-direction:column">
+                            <input name="noticiaTitulo" type="text" maxlength="20" required placeholder="Titulo" />
+                            <input name="noticiaTag" type="text" maxlength="20" required placeholder="Tags"/>
+                            <textarea name="noticiaText" maxlength="250" required placeholder="Noticia"></textarea>
+                            <input name="usuarioNome" type="text" maxlength="50" required placeholder="Nome do usuario" />
+                            <input name="usuarioEmail" type="text" maxlength="20" required placeholder="Email do usuario"/>
+                            <button type="submit">Publicar  </button>
+                            <button type="reset">Limpar formulario</button>
+                        </form>
+                    </div>
+                    <hr style="color: black; width: 30rem;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Texto</th>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Editor</th>
+                                <th>Excluir</th>
+                            </tr>
+                        </thead>
+                        <tbody id="noticiaTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tabLeitura" class="tab-pane">
+                <h2>Leitura</h2>
+                <div id="leituraConteiner"></div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="~/js/siteFlow.js"></script>
