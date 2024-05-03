@@ -130,7 +130,7 @@ function onGetDataAsync() {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                                 <td><div style="cursor: pointer"
-                                             onclick="GoToLeitura('tabLeitura', 
+                                             onclick="GoToLeitura( 
                                              '${encodeURIComponent(JSON.stringify(item))}')">
                                                 ${item.titulo}
                                     </div></td>
@@ -147,7 +147,7 @@ function onGetDataAsync() {
         });
 }
 
-function GoToLeitura(tabid, item) {
+function GoToLeitura(item) {
     document.getElementById("tabNoticias").classList.remove('active');
     document.getElementById("noticia-btn").classList.remove('active');
     document.getElementById("tabNoticias").style.display = 'none';
@@ -158,7 +158,7 @@ function GoToLeitura(tabid, item) {
     const noticia = JSON.parse(decodeURIComponent(item));
     let prep = `
             <div class="leitura-model">
-                    <span onclick="GoToLeitura('tabLeitura')"><b>Titulo: </b>${noticia.titulo}</span></td>
+                    <span><b>Titulo: </b>${noticia.titulo}</span></td>
                     <div>
                         <span><b>Autor: </b>${noticia.usuario.nome}</span>
                         <span><b>Contato: </b>${noticia.usuario.email}</span>
@@ -282,7 +282,7 @@ document.getElementById('createNoticiaForm').addEventListener('submit', function
             Noticiatabela.innerHTML += `
                 <tr data-refid="${data.noticia.refId}">
                 <td><div style="cursor: pointer"
-                                             onclick="GoToLeitura('tabLeitura',
+                                             onclick="GoToLeitura(
                                              '${encodeURIComponent(JSON.stringify(data.noticia))}')">
                                                 ${data.noticia.titulo}
                                     </div></td>
