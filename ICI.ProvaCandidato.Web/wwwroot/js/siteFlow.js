@@ -1,6 +1,52 @@
 document.addEventListener("DOMContentLoaded", function () {
     onGetDataAsync();
 });
+const spans = document.querySelectorAll('.tag-show');
+spans.forEach(span => {
+    span.addEventListener('click', function (event) {
+        event.stopPropagation();
+    });
+});
+
+function getNews(descricao) {
+    fetch('https://localhost:5001/api/GetAllByTag?descricao=' + descricao)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao obter notícias por tag');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableTop = document.getElementById("tableTop");
+            const itens = document.getElementById("noticiaTag");
+            itens.innerHTML = '';
+
+            tableTop.innerHTML = `
+                    <th>Titulo</th>
+                    <th>Texto</th>
+                    <th>Usuario</th>
+                    <th>Email</th>`
+
+            data.forEach(function (item) {
+                const textoExibido = item.texto.length > 72 ? item.texto.substring(0, 72) + '...' : item.texto;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                <td><div style="cursor: pointer"
+                             onclick="GoToLeitura('tabLeitura', 
+                             '${encodeURIComponent(JSON.stringify(item))}')">
+                                ${item.titulo}
+                    </div></td>
+                    <td>${textoExibido}</td>
+                    <td>${item.usuario.nome}</td>
+                    <td>${item.usuario.email}</td>`;
+                itens.appendChild(tr);
+                tr.id = item.refId;
+            });
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+}
 
 function editor(item) {
     console.log(item)
@@ -118,7 +164,7 @@ function onGetDataAsync() {
         .then(data => {
             const tabTags = document.getElementById("tagConteiner");
             data.forEach(function (item) {
-                tabTags.innerHTML += `<span class="tag-show">${item.descricao}<span>`;
+                tabTags.innerHTML += `<span onclick="getNews(${JSON.stringify(item.descricao).replace(/"/g, '&quot;') })" style="cursor: pointer" class="tag-show">${item.descricao}<span>`;
             });
         })
     fetch("https://localhost:5001/api/Noticia")
@@ -137,8 +183,8 @@ function onGetDataAsync() {
                                     <td>${textoExibido}</td>
                                     <td>${item.usuario.nome}</td>
                                     <td>${item.usuario.email}</td>
-                                    <td><span onclick="editor(${JSON.stringify(item).replace(/"/g, '&quot;') })">Editar</span></td>
-                                    <td><span onclick="excluir(${encodeURIComponent(JSON.stringify(item.refId))})">Excluir</span></td>`;
+                                    <td><span style="cursor: pointer" onclick="editor(${JSON.stringify(item).replace(/"/g, '&quot;') })">Editar</span></td>
+                                    <td><span style="cursor: pointer" onclick="excluir(${encodeURIComponent(JSON.stringify(item.refId))})">Excluir</span></td>`;
                 tabTags.appendChild(tr);
                 tr.id = item.refId;
             });
@@ -194,7 +240,7 @@ document.getElementById('createTagForm').addEventListener('submit', function (ev
         .then(data => {
             if (data.descricao !== null) {
                 const tagsDiv = document.getElementById("tagConteiner");
-                tagsDiv.innerHTML += `<span class="tag-show">${inputValue}<span>`
+                tagsDiv.innerHTML += `<span onclick="getNews(${JSON.stringify(inputValue).replace(/"/g, '&quot;') })" class="tag-show">${inputValue}<span>`
             }
             else {
                 alert(`Ja existe uma Tag com o nome '${inputValue}'`);
@@ -289,8 +335,8 @@ document.getElementById('createNoticiaForm').addEventListener('submit', function
                                     <td>${textoExibido}</td>
                                     <td>${data.usuario.nome}</td>
                                     <td>${data.usuario.email}</td>
-                                    <td><span onclick="editor(${encodeURIComponent(JSON.stringify(data).replace(/"/g, '&quot;'))})">Editar</span></td>
-                                    <td><span onclick="excluir(${encodeURIComponent(JSON.stringify(data.noticia.refId))})">Excluir</span></td>
+                                    <td><span style="cursor: pointer" onclick="editor(${encodeURIComponent(JSON.stringify(data).replace(/"/g, '&quot;'))})">Editar</span></td>
+                                    <td><span style="cursor: pointer" onclick="excluir(${encodeURIComponent(JSON.stringify(data.noticia.refId))})">Excluir</span></td>
                 </tr>
             `;
         })

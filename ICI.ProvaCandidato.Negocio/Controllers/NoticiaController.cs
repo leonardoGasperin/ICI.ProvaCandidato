@@ -1,10 +1,10 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
-using ICI.ProvaCandidato.Dados.Interface;
+﻿using ICI.ProvaCandidato.Dados.Interface;
 using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using ICI.ProvaCandidato.Negocio.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Controllers

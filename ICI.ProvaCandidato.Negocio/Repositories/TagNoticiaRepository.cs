@@ -1,8 +1,11 @@
 ﻿using ICI.ProvaCandidato.Dados.Dto;
+using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Repositories
@@ -16,9 +19,18 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
             _context = context;
         }
 
-        public Task<NoticiaDto> GetNoticiasByTag(string descricao)
+        public async Task<List<NoticiaDto>> GetAllByTag(string descricao)
         {
-            throw new System.NotImplementedException();
+            var noticias = await _context.TagNoticias
+                .Include(x => x.Noticia)
+                .ThenInclude(noticia => noticia.Usuario)
+                .Include(x => x.Tag)
+                .AsNoTracking()
+                .Where(x => x.Tag.Descricao.Equals(descricao))
+                .Select(x => x.Noticia.ConverterToDto())
+                .ToListAsync();
+
+            return noticias;
         }
 
         public async Task<string> GetTagByNoticiaId(int noticiaId)

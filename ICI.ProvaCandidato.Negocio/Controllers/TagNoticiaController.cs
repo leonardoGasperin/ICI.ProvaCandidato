@@ -19,5 +19,14 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
 
             return Ok(descricao);
         }
+
+
+        [HttpGet("api/GetAllByTag")]
+        public async Task<IActionResult> GetAllByTag(string descricao)
+        {
+            var noticias = await _repository.GetAllByTag(descricao);
+
+            return Ok(noticias);
+        }
     }
 }
