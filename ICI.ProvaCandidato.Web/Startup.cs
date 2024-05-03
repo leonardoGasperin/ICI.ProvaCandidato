@@ -42,6 +42,7 @@ namespace ICI.ProvaCandidato.Web
             services.AddScoped<ITagRuleRepository, TagRuleRepository>();
             services.AddScoped<INoticiaRuleRepository, NoticiaRuleRepository>();
             services.AddScoped<IUsuarioRuleRepository, UsuarioRuleRepository>();
+            services.AddScoped<ITagNoticiaRepository, TagNoticiaRepository>();
         }
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

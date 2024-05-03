@@ -2,6 +2,7 @@
 using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using ICI.ProvaCandidato.Negocio.Interfaces;
+using ICI.ProvaCandidato.Negocio.Requests;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -62,12 +63,28 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
            
         }
 
-        public async Task Update(NoticiaDto dto, int noticiaId)
+        public async Task Update(CreateNoticiaRequest dto)
         {
-            var noticia = _context.Noticias.FirstOrDefault(x => x.Id.Equals(noticiaId));
-            noticia.Titulo = dto.Titulo;
-            noticia.Texto = dto.Texto;
+            var noticia = _context.Noticias.FirstOrDefault(x => x.Id.Equals(dto.Noticia.RefId));
+            var tag = await _context.Tags.FirstOrDefaultAsync(x =>x.Descricao.Equals(dto.Tag.Descricao)) ?? Tag.MountFromDto(dto.Tag);
+            var tagNoticia = await _context.TagNoticias.FirstOrDefaultAsync(x => x.NoticiaId.Equals(dto.Noticia.RefId));
+            
+            noticia.Titulo = dto.Noticia.Titulo;
+            noticia.Texto = dto.Noticia.Texto;
+            noticia.UsuarioId = dto.Noticia.UsuarioId;
             _context.Noticias.Update(noticia);
+
+            if (!_context.Tags.Any(x => x.Descricao.Equals(tag.Descricao)))
+            {
+                _context.Tags.Add(tag);
+                await _context.SaveChangesAsync();
+            }
+
+            if (!tag.Id.Equals(tagNoticia.TagId))
+            {
+                tagNoticia.TagId = tag.Id;
+                _context.TagNoticias.Update(tagNoticia);
+            }
             await _context.SaveChangesAsync();
         }
 

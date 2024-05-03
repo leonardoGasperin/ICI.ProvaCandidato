@@ -14,23 +14,76 @@ function editor(item) {
     texto.value = item.texto;
     nome.value = item.usuario.nome;
     email.value = item.usuario.email;
-    descricao.value = item.tag.descricao;
 
-    const data = {
-        noticia: {
-            refId: item.refId,
-            titulo: document.querySelector('input[name="noticiaTitulo"]').value,
-            texto: document.querySelector('textarea[name="noticiaText"]').value,
-            usuarioId: item.usuarioId
-        },
-        usuario: {
-            nome: document.querySelector('input[name="usuarioNome"]').value,
-            email: document.querySelector('input[name="usuarioEmail"]').value
-        },
-        tag: {
-            descricao: document.querySelector('input[name="noticiaTag"]').value
-        }
-    };
+    fetch(`https://localhost:5001/api/TagByNoticiaId?id=${item.refId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao obter a tag da notícia');
+            }
+            return response.text();
+        })
+        .then(data => {
+            descricao.value = data;
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
+    const editarBtn = document.getElementById('editar');
+    editarBtn.style.display = "flex";
+    const cancelarBtn = document.getElementById('cancelarRditar');
+    cancelarBtn.style.display = "flex";
+
+    cancelarBtn.addEventListener('click', function (event) {
+        editarBtn.style.display = "none";
+        cancelarBtn.style.display = "none";
+    });
+
+    editarBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        const data = {
+            noticia: {
+                refId: item.refId,
+                titulo: document.querySelector('input[name="noticiaTitulo"]').value,
+                texto: document.querySelector('textarea[name="noticiaText"]').value,
+                usuarioId: item.usuarioId
+            },
+            usuario: {
+                nome: document.querySelector('input[name="usuarioNome"]').value,
+                email: document.querySelector('input[name="usuarioEmail"]').value
+            },
+            tag: {
+                descricao: document.querySelector('input[name="noticiaTag"]').value
+            }
+        };
+
+        fetch('https://localhost:5001/api/Noticia', {
+            method: 'PATCH',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ocorreu um erro ao tentar excluir a descrição.');
+                return response.json();
+            }
+                
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert("Suas alterações não serão salvas.");
+            window.location.reload();
+        })
+        .finally(() => {
+            alert("Suas alterações foram salvas com sucesso.");
+            window.location.reload();
+            console.log('A requisição foi concluída');
+            window.location.reload();
+        });
+
+    });
 }
 
 function excluir(noticiaId) {
@@ -73,7 +126,6 @@ function onGetDataAsync() {
         .then(data => {
             const tabTags = document.getElementById("noticiaTable");
             data.forEach(function (item) {
-                console.log(JSON.stringify(item));
                 const textoExibido = item.texto.length > 72 ? item.texto.substring(0, 72) + '...' : item.texto;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -90,7 +142,9 @@ function onGetDataAsync() {
                 tabTags.appendChild(tr);
                 tr.id = item.refId;
             });
-        })
+        }).catch(error => {
+            console.error('Erro:', error);
+        });
 }
 
 function GoToLeitura(tabid, item) {

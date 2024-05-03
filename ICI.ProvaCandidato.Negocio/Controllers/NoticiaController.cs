@@ -67,11 +67,11 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> Edit(NoticiaDto dto, int noticiaId)
+        public async Task<IActionResult> Edit(CreateNoticiaRequest dto)
         {
             try
             {
-                await _repository.Update(dto, noticiaId);
+                await _repository.Update(dto);
             }
             catch (Exception ex)
             {

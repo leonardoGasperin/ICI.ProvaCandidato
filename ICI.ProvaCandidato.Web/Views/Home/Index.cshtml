@@ -35,12 +35,24 @@
                     <div id="tagConteiner">
                     </div>
                     <hr style="color: black; width: 30rem;">
+                    <div>
+                        <table>
+                            <thead>
+                                <tr id="tableTop">
+                                </tr>
+                            </thead>
+                            <tbody id="noticiaTag">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div id="tabNoticias" class="tab-pane">
                 <div>
                     <h2>Noticias</h2>
                     <div>
+                        <button id="editar" style="display: none">Editar</button>
+                        <button id="cancelarRditar" style="display: none">Cancelar</button>
                         <form id="createNoticiaForm" style="display: flex; flex-direction:column">
                             <input name="noticiaTitulo" type="text" maxlength="20" required placeholder="Titulo" />
                             <input name="noticiaTag" type="text" maxlength="20" required placeholder="Tags"/>
