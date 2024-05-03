@@ -1,8 +1,8 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
+﻿using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 using ICI.ProvaCandidato.Dados.Interface;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Repositories
 {

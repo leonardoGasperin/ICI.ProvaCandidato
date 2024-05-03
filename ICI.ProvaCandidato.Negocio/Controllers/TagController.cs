@@ -1,10 +1,10 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 using ICI.ProvaCandidato.Dados.Interface;
-using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Controllers
 {
@@ -22,11 +22,11 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<List<TagDto>> GetAll()
         {
             var tags = await _repository.GetAll();
 
-            return Ok(tags);
+            return tags;
         }
 
         [HttpPost]
@@ -40,8 +40,12 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
                 {
                     await _repository.Create(dto);
                 }
+                else
+                {
+                    dto = new();
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
             }
@@ -70,7 +74,7 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(string descricao)
+        public async Task<IActionResult> Delete([FromBody] string descricao)
         {
             var cannotDelete = await _rule.CannotDelete(descricao);
 
@@ -80,13 +84,17 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
                 {
                     await _repository.Delete(descricao);
                 }
+                else
+                {
+                    return NotFound();
+                }
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
             }
 
-            return Ok();
+            return Ok(descricao);
         }
     }
 }

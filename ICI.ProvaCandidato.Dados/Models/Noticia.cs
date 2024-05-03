@@ -11,10 +11,13 @@ namespace ICI.ProvaCandidato.Dados.Models
 
         public NoticiaDto ConverterToDto()
         {
-            return new NoticiaDto() {
+            return new NoticiaDto()
+            {
+                RefId = Id,
                 Titulo = Titulo,
                 Texto = Texto,
-                UsuarioId = UsuarioId
+                UsuarioId = UsuarioId,
+                Usuario = Usuario
             };
         }
 

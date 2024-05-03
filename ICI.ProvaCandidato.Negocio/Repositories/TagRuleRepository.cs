@@ -1,9 +1,9 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 using ICI.ProvaCandidato.Dados.Interface;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Repositories
 {
@@ -25,9 +25,11 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
         {
             if (await AlreadyExist(descricao))
             {
-                var tagToDelete =  _context.Tags.FirstOrDefault(x => x.Descricao == descricao);
+                var tagToDelete = _context.Tags.FirstOrDefault(x => x.Descricao == descricao);
                 var t = _context.TagNoticias.AsNoTracking().FirstOrDefault();
-                return await _context.TagNoticias.AsNoTracking().AnyAsync(x => x.TagId == tagToDelete.Id);
+                return await _context
+                    .TagNoticias.AsNoTracking()
+                    .AnyAsync(x => x.TagId == tagToDelete.Id);
             }
             return true;
         }

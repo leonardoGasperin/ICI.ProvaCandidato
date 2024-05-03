@@ -1,9 +1,11 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
-using ICI.ProvaCandidato.Dados.Interface;
-using ICI.ProvaCandidato.Negocio.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Interface;
+using ICI.ProvaCandidato.Dados.Models;
+using ICI.ProvaCandidato.Negocio.Interfaces;
+using ICI.ProvaCandidato.Negocio.Requests;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ICI.ProvaCandidato.Negocio.Controllers
 {
@@ -28,11 +30,33 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(NoticiaDto dto)
+        public async Task<IActionResult> Create(CreateNoticiaRequest dto)
         {
             try
             {
-                await _repository.Create(dto);
+                var needCrateUsuario = await _rule.NeedCreatNewAccount(dto.Usuario.Email);
+                var needCrateTag = await _rule.NeedCreateNewTag(dto.Tag.Descricao);
+                var usuario = new Usuario();
+                var tag = new Tag();
+
+                if (!needCrateUsuario)
+                {
+                    usuario = await _repository.CreateUsuarioToNoticia(dto.Usuario);
+                }
+                else
+                {
+                    usuario = await _repository.GetUsuarioReferencia(dto.Usuario);
+                }
+                if (!needCrateTag)
+                {
+                    tag = await _repository.CreateTagToNoticia(dto.Tag.Descricao);
+                }
+                else
+                {
+                    tag = await _repository.GetTagReferencia(dto.Tag);
+                }
+
+                await _repository.Create(dto.Noticia, usuario, tag);
             }
             catch (Exception ex)
             {
@@ -43,11 +67,11 @@ namespace ICI.ProvaCandidato.Negocio.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> Edit(NoticiaDto dto, int noticiaId)
+        public async Task<IActionResult> Edit(CreateNoticiaRequest dto)
         {
             try
             {
-                await _repository.Update(dto, noticiaId);
+                await _repository.Update(dto);
             }
             catch (Exception ex)
             {

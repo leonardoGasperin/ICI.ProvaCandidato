@@ -1,13 +1,13 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 using ICI.ProvaCandidato.Dados.Models;
 using ICI.ProvaCandidato.Negocio.DbContexts;
 using ICI.ProvaCandidato.Negocio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ICI.ProvaCandidato.Negocio.Repositories
 {
@@ -23,9 +23,8 @@ namespace ICI.ProvaCandidato.Negocio.Repositories
         public async Task<List<TagDto>> GetAll()
         {
             var tags = await _context
-                .Tags
-                .AsNoTracking()
-                .Select(x=>x.ConverterToDto())
+                .Tags.AsNoTracking()
+                .Select(x => x.ConverterToDto())
                 .ToListAsync();
 
             return tags;

@@ -1,5 +1,5 @@
-﻿using ICI.ProvaCandidato.Dados.Dto;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using ICI.ProvaCandidato.Dados.Dto;
 
 namespace ICI.ProvaCandidato.Dados.Interface
 {

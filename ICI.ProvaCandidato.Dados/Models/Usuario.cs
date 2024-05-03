@@ -6,15 +6,11 @@ namespace ICI.ProvaCandidato.Dados.Models
     {
         public string Nome { get; set; }
         public string Senha { get; set; }
-        public string Email {  get; set; }
+        public string Email { get; set; }
 
         public UsuarioDto ConverterToDto()
         {
-            return new UsuarioDto()
-            {
-                Nome = Nome,
-                Email = Email
-            };
+            return new UsuarioDto() { Nome = Nome, Email = Email };
         }
 
         public static Usuario MountFromDto(UsuarioDto dto, string senha)

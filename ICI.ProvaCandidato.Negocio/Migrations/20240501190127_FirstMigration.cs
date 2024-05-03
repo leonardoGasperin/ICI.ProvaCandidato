@@ -10,20 +10,23 @@ namespace ICI.ProvaCandidato.Negocio.Migrations
                 name: "Tags",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Descricao = table.Column<string>(type: "varchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nome = table.Column<string>(type: "varchar(50)", nullable: false),
                     Senha = table.Column<string>(type: "varchar(50)", nullable: false),
@@ -32,13 +35,15 @@ namespace ICI.ProvaCandidato.Negocio.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "Noticias",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Titulo = table.Column<string>(type: "varchar(50)", nullable: false),
                     Texto = table.Column<string>(type: "TEXT", nullable: false),
@@ -52,18 +57,20 @@ namespace ICI.ProvaCandidato.Negocio.Migrations
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "TagNoticias",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table
+                        .Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     NoticiaId = table.Column<int>(type: "INTERGER", nullable: false),
-                    TagId = table.Column<int>(type: "INTERGER", nullable: false),
-                    Tag = table.Column<int>(type: "INTEGER", nullable: false)
+                    TagId = table.Column<int>(type: "INTERGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,33 +80,33 @@ namespace ICI.ProvaCandidato.Negocio.Migrations
                         column: x => x.NoticiaId,
                         principalTable: "Noticias",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_Noticias_UsuarioId",
                 table: "Noticias",
-                column: "UsuarioId");
+                column: "UsuarioId"
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_TagNoticias_NoticiaId",
                 table: "TagNoticias",
-                column: "NoticiaId");
+                column: "NoticiaId"
+            );
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "TagNoticias");
+            migrationBuilder.DropTable(name: "TagNoticias");
 
-            migrationBuilder.DropTable(
-                name: "Tags");
+            migrationBuilder.DropTable(name: "Tags");
 
-            migrationBuilder.DropTable(
-                name: "Noticias");
+            migrationBuilder.DropTable(name: "Noticias");
 
-            migrationBuilder.DropTable(
-                name: "Usuarios");
+            migrationBuilder.DropTable(name: "Usuarios");
         }
     }
 }
